@@ -45,7 +45,6 @@ form .form-row .input-data{
   position: relative;
 }
 form .form-row .textarea{
-  height: 70px;
   width: 110px;
 }
 .input-data input,
@@ -133,7 +132,7 @@ form .form-row .textarea{
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    margin-bottom: 32px
+
 }
 @media (max-width: 700px) {
   .container .text{

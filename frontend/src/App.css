@@ -17,6 +17,21 @@ th {
   background-color: #efefef;
 }
 
+.editCar{
+  background: -webkit-linear-gradient(115deg, #063b3f 10%, #57037e 90%);
+  border: none;
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.editCar:hover {
+  background: -webkit-linear-gradient(115deg, #57037e 10%, #063b3f 90%);
+  color: #fff;
+}
+
 .form-row-home {
   display: flex;
   justify-content: space-evenly;

@@ -54,7 +54,6 @@ function App() {
                 </div>
                 <div class="form-row-home">
                     <input class="input-data-home" type="button" value="ADICIONAR CARRO" onClick={handleAdd} />
-                    <input class="input-data-home" type="button" value="EDITAR CARRO" onClick={() => selectedCarId ? handleEdit(selectedCarId) : alert("Selecione um carro para editar.")} />
                     <input class="input-data-home" type="button" value="EXCLUIR CARRO" onClick={() => selectedCarId ? handleDelete(selectedCarId) : alert("Selecione um carro para excluir.")} />
                 </div>
                 <table>
@@ -78,8 +77,9 @@ function App() {
                                 <td>{car.categoria}</td>
                                 <td>{car.disponibilidade ? 'Disponível' : 'Indisponível'}</td>
                                 <td>
-                                    <button onClick={() => handleEdit(car.id)}>Editar</button> {/* Botão de editar dentro da tabela */}
-                                    <button onClick={() => handleDelete(car.id)}>Excluir</button> {/* Botão de excluir dentro da tabela */}
+                                    
+                                    <button class="editCar" onClick={() => handleEdit(car.id)}>Editar</button> {/* Botão de editar dentro da tabela */}
+                                    <button class="editCar" onClick={() => handleDelete(car.id)}>Excluir</button> {/* Botão de excluir dentro da tabela */}
                                 </td>
                                 <td>{car.image}</td>
                             </tr>

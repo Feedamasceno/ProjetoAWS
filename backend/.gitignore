@@ -1,0 +1,20 @@
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependências
+node_modules/
+__pycache__/
+*.egg-info/
+.env
+venv/
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.log
+*.tmp
+*.swp

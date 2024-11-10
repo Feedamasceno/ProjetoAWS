@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EditCar.css'; // Importando o arquivo de estilos CSS
+import './AddCar.css';
 
 function EditCar() {
     const { carId } = useParams();
@@ -12,8 +13,8 @@ function EditCar() {
         disponibilidade: false, // Garantindo que o valor inicial seja booleano
         arquivo: '',
     });
-    const [error, setError] = useState(null); 
-    const [success, setSuccess] = useState(null); 
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,7 +28,7 @@ function EditCar() {
             .then(data => setCar(data))
             .catch(error => {
                 console.error("Erro ao buscar carro:", error);
-                setError('Erro ao buscar carro: ' + error.message); 
+                setError('Erro ao buscar carro: ' + error.message);
             });
     }, [carId]);
 
@@ -58,21 +59,21 @@ function EditCar() {
             },
             body: JSON.stringify(updatedCar),  // Enviando os dados como JSON
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                setError(data.error); 
-                setSuccess(null); 
-            } else {
-                setSuccess('Carro atualizado com sucesso!');
-                setError(null); 
-                navigate('/'); 
-            }
-        })
-        .catch(error => {
-            setError('Erro ao editar carro: ' + error.message);
-            setSuccess(null);
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setError(data.error);
+                    setSuccess(null);
+                } else {
+                    setSuccess('Carro atualizado com sucesso!');
+                    setError(null);
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                setError('Erro ao editar carro: ' + error.message);
+                setSuccess(null);
+            });
     };
 
     const handleChange = (e) => {
@@ -87,26 +88,29 @@ function EditCar() {
 
     return (
         <div className="container">
-            <h2 className="text">Editar Carro</h2>
+            <div className="header">
+                <h2 className="text">Editar Carro</h2>
+                <span className="editCar" onClick={() => navigate('/')}>Voltar</span>
+            </div>
             <form onSubmit={handleSubmit}>
                 <div className="form-row">
                     <div className="input-data">
-                        <input 
-                            type="text" 
-                            name="modelo" 
-                            value={car.modelo} 
-                            onChange={handleChange} 
-                            required 
+                        <input
+                            type="text"
+                            name="modelo"
+                            value={car.modelo}
+                            onChange={handleChange}
+                            required
                         />
                         <label>Modelo</label>
                     </div>
                     <div className="input-data">
-                        <input 
-                            type="text" 
-                            name="marca" 
-                            value={car.marca} 
-                            onChange={handleChange} 
-                            required 
+                        <input
+                            type="text"
+                            name="marca"
+                            value={car.marca}
+                            onChange={handleChange}
+                            required
                         />
                         <label>Marca</label>
                     </div>
@@ -114,49 +118,50 @@ function EditCar() {
 
                 <div className="form-row">
                     <div className="input-data">
-                        <input 
-                            type="number" 
-                            name="ano" 
-                            value={car.ano} 
-                            onChange={handleChange} 
-                            required 
+                        <input
+                            type="number"
+                            name="ano"
+                            value={car.ano}
+                            onChange={handleChange}
+                            required
                         />
                         <label>Ano</label>
                     </div>
                     <div className="input-data">
-                        <input 
-                            type="text" 
-                            name="categoria" 
-                            value={car.categoria} 
-                            onChange={handleChange} 
-                            required 
+                        <input
+                            type="text"
+                            name="categoria"
+                            value={car.categoria}
+                            onChange={handleChange}
+                            required
                         />
                         <label>Categoria</label>
                     </div>
                 </div>
-
                 <div className="form-row">
                     <div className="input-data">
-                        <input 
-                            type="checkbox" 
-                            name="disponibilidade" 
-                            checked={car.disponibilidade} 
-                            onChange={handleChange} 
+                        <input
+                            type="file"
+                            name="arquivo"
+                            onChange={handleChange}
+                            required
                         />
-                        <label>Disponibilidade</label>
-                    </div>
-                    <div className="input-data">
-                        <input 
-                            type="file" 
-                            name="arquivo" 
-                            onChange={handleChange} 
-                            required 
-                        />
-                        <label>Arquivo</label>
                     </div>
                 </div>
+                <div className="form-row">
+                    <div className="input-data textarea">
+                        <label>Disponibilidade</label>
+                    </div>
+                    <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={car.disponibilidade}
+                        onChange={handleChange}
+                    />
+                </div>
 
-                <button type="submit" className="submit">Salvar Alterações</button>
+
+                <button class="editCar" type="submit" className="submit">Salvar Alterações</button>
             </form>
             {error && <div className="error">{error}</div>}
             {success && <div className="success">{success}</div>}
