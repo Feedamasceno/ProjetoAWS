@@ -33,19 +33,34 @@ function AddCar() {
 
         fetch('http://localhost:25000/data', {
             method: 'POST',
-            body: formData,
+            headers: {
+                'Content-Type': 'application/json',  // Defina o tipo de conteúdo como JSON
+            },
+            body: JSON.stringify({
+                modelo,
+                marca,
+                ano,
+                categoria,
+                disponibilidade,
+                arquivo,  // Se for nulo, o backend pode lidar com isso
+            }),
         })
             .then(response => {
+                console.log(response); // Verifique os detalhes da resposta
                 if (response.ok) {
                     setSuccess('Carro adicionado com sucesso!');
                     setError('');
                     navigate('/'); // Volta para a lista de carros
                 } else {
-                    setError('Erro ao adicionar carro. Tente novamente.');
+                    response.text().then(text => {
+                        setError('Erro ao adicionar carro: ' + text);
+                        console.error('Erro detalhado:', text); // Logando a resposta detalhada
+                    });
                 }
             })
             .catch(error => {
                 setError('Erro ao adicionar carro: ' + error.message);
+                console.error('Erro:', error); // Logando o erro
             });
     };
 

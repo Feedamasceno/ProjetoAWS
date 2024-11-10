@@ -9,7 +9,7 @@ function EditCar() {
         marca: '',
         ano: '',
         categoria: '',
-        disponibilidade: false,
+        disponibilidade: false, // Garantindo que o valor inicial seja booleano
         arquivo: '',
     });
     const [error, setError] = useState(null); 
@@ -40,12 +40,23 @@ function EditCar() {
             return;
         }
 
+        // Prepare os dados para envio
+        const { modelo, marca, ano, categoria, disponibilidade, arquivo } = car;
+        const updatedCar = {
+            modelo,
+            marca,
+            ano,
+            categoria,
+            disponibilidade,
+            arquivo: arquivo ? arquivo.name : null,  // Envia apenas o nome do arquivo (se necessário)
+        };
+
         fetch(`http://localhost:25000/data/${carId}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json',  // Definindo o tipo de conteúdo como JSON
             },
-            body: JSON.stringify(car),
+            body: JSON.stringify(updatedCar),  // Enviando os dados como JSON
         })
         .then(response => response.json())
         .then(data => {
@@ -65,10 +76,10 @@ function EditCar() {
     };
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value, type, checked, files } = e.target;
         setCar(prevCar => ({
             ...prevCar,
-            [name]: type === 'checkbox' ? checked : value,
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
         }));
     };
 
@@ -126,39 +137,29 @@ function EditCar() {
 
                 <div className="form-row">
                     <div className="input-data">
-                        <label>
-                            Disponibilidade:
-                            <input 
-                                type="checkbox" 
-                                name="disponibilidade" 
-                                checked={car.disponibilidade} 
-                                onChange={handleChange} 
-                            />
-                        </label>
+                        <input 
+                            type="checkbox" 
+                            name="disponibilidade" 
+                            checked={car.disponibilidade} 
+                            onChange={handleChange} 
+                        />
+                        <label>Disponibilidade</label>
                     </div>
-                </div>
-
-                <div className="form-row">
                     <div className="input-data">
                         <input 
                             type="file" 
                             name="arquivo" 
-                            onChange={(e) => setCar({ ...car, arquivo: e.target.files[0] })}
+                            onChange={handleChange} 
                             required 
                         />
                         <label>Arquivo</label>
                     </div>
                 </div>
 
-                <div className="submit-btn">
-                    <div className="input-data">
-                        <input type="submit" value="Salvar" />
-                    </div>
-                </div>
+                <button type="submit" className="submit">Salvar Alterações</button>
             </form>
-
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
+            {error && <div className="error">{error}</div>}
+            {success && <div className="success">{success}</div>}
         </div>
     );
 }

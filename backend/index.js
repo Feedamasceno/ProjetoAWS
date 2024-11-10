@@ -19,11 +19,28 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Rota para obter dados da tabela Carro
+// Rota para obter todos os dados da tabela Carro
 app.get('/data', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM Carro');
     res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Rota para obter um carro específico pela id
+app.get('/data/:carId', async (req, res) => {
+  const { carId } = req.params;
+
+  try {
+    const result = await pool.query('SELECT * FROM Carro WHERE id = $1', [carId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Carro não encontrado' });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -48,25 +65,61 @@ app.post('/data', async (req, res) => {
   }
 });
 
-// Rota para editar um carro existente (PUT)
+// Rota para atualizar um carro (PUT)
 app.put('/data/:carId', async (req, res) => {
   const { carId } = req.params;
   const { modelo, marca, ano, categoria, arquivo } = req.body;
 
-  if (!modelo || !marca || !ano || !categoria) {
-    return res.status(400).json({ error: 'Modelo, marca, ano e categoria são obrigatórios.' });
+  // Inicializa arrays para os valores de atualização
+  const updates = [];
+  const values = [];
+
+  // Verificar se os campos foram passados e adicioná-los à query
+  if (modelo) {
+    updates.push('modelo = $' + (updates.length + 1));
+    values.push(modelo);
+  }
+  if (marca) {
+    updates.push('marca = $' + (updates.length + 1));
+    values.push(marca);
+  }
+  if (ano) {
+    updates.push('ano = $' + (updates.length + 1));
+    values.push(ano);
+  }
+  if (categoria) {
+    updates.push('categoria = $' + (updates.length + 1));
+    values.push(categoria);
+  }
+  if (arquivo !== undefined) {
+    updates.push('arquivo = $' + (updates.length + 1));
+    values.push(arquivo);
   }
 
-  try {
-    const result = await pool.query(
-      'UPDATE Carro SET modelo = $1, marca = $2, ano = $3, categoria = $4, arquivo = $5 WHERE id = $6 RETURNING *',
-      [modelo, marca, ano, categoria, arquivo || null, carId]
-    );
+  // Verificar se pelo menos um campo foi fornecido para a atualização
+  if (updates.length === 0) {
+    return res.status(400).json({ error: 'Nenhum campo válido fornecido para atualização.' });
+  }
 
+  // Adiciona o ID do carro na última posição dos valores
+  values.push(carId);
+
+  // Gerar a query dinamicamente
+  const query = `
+    UPDATE Carro
+    SET ${updates.join(', ')}
+    WHERE id = $${values.length}
+    RETURNING *`;
+
+  try {
+    const result = await pool.query(query, values);
+
+    // Caso o carro não seja encontrado, retorna erro
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Carro não encontrado' });
     }
 
+    // Retorna os dados atualizados do carro
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: 'Erro ao atualizar carro: ' + err.message });

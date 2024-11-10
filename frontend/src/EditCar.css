@@ -128,7 +128,7 @@ body {
 }
 
 .submit-btn .input-data input {
-    background: none;
+    background: -webkit-linear-gradient(115deg, #063b3f 10%, #57037e 90%); /* Gradiente de fundo */
     border: none;
     color: #fff;
     font-size: 17px;
@@ -138,6 +138,15 @@ body {
     cursor: pointer;
     position: relative;
     z-index: 2;
+    transition: background 0.4s ease; /* Transição suave ao passar o mouse */
+}
+
+.submit-btn .input-data input:hover {
+    background: -webkit-linear-gradient(115deg, #57037e 10%, #063b3f 90%); /* Alteração do gradiente no hover */
+}
+
+.submit-btn .input-data input:active {
+    background: #57037e; /* Cor sólida quando o botão é pressionado */
 }
 
 /* Adicionar um espaço para mensagens de erro e sucesso */
