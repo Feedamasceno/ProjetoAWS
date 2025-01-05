@@ -1,27 +1,24 @@
-Sistema de Locação de Carros
+# Sistema de Locação de Carros
 
-Este projeto é uma aplicação para locação de carros, desenvolvida utilizando tecnologias modernas e infraestrutura na AWS.
+Este é um sistema de locação de carros desenvolvido utilizando tecnologias modernas e infraestrutura da AWS.
 
-Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
-Backend: Node.js com Express, containerizado com Docker.
+- **Backend**: Node.js com Express, containerizado com Docker.
+- **Frontend**: Desenvolvido e containerizado com Docker.
+- **Banco de Dados**: Amazon RDS MySQL.
+- **Armazenamento de Arquivos**: Amazon S3 com URLs assinadas para uploads seguros.
+- **Integração Serverless**: AWS Lambda e API Gateway.
+- **Notificação**: Amazon SES para envio de e-mails automatizados.
 
-Frontend: Desenvolvido e executado em Docker.
+## Funcionalidades
 
-Banco de Dados: Amazon RDS MySQL.
+- CRUD completo para gerenciar carros (criar, ler, atualizar e deletar).
+- Upload de imagens de carros com armazenamento seguro no S3.
+- Integração entre Lambda e API Gateway para gerenciar operações serverless.
+- Envio de e-mails automáticos ao cadastrar ou atualizar veículos.
 
-Armazenamento de Arquivos: Amazon S3 com URLs assinadas.
+## Licença
 
-Integração Serverless: AWS Lambda e API Gateway.
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
 
-Notificação: Amazon SES para envio de e-mails.
-
-Funcionalidades
-
-CRUD de Carros: Gerenciamento completo de veículos (criar, ler, atualizar e excluir).
-
-Upload de Arquivos: Envio seguro de imagens de carros para o S3 via URLs assinadas.
-
-Notificações por E-mail: Envio automático de e-mails ao cadastrar novos veículos ou realizar atualizações importantes.
-
-Integração Serverless: Utilização de AWS Lambda para gerenciar requisições entre o S3 e o API Gateway.
